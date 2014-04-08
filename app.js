@@ -62,6 +62,14 @@ log = function() {};
     log.info( '\n' + (app.name.toUpperCase() + ' LOADING').bold.gay );
     
     
+    // Restify middleware (must come before routing)
+    //app.use( restify.fullResponse() );
+    app.use( restify.queryParser() );
+    app.use( restify.bodyParser() );
+    app.use( restify.authorizationParser() );
+    app.use( restify.gzipResponse() );
+    
+    
     /**
      * This middleware requires a valid API key
      * to access ANY route in the application.
@@ -109,10 +117,6 @@ log = function() {};
         );
         
     }
-    
-    app.use( restify.bodyParser() );
-    app.use( restify.authorizationParser() );
-    app.use( restify.gzipResponse() );
     
     
     // Aaaaaaaand begin

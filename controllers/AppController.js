@@ -44,6 +44,8 @@ module.exports = function() {
         
         search: function( req, res, next ) {
             log.debug(req.params);
+            log.debug(req.body);
+            log.debug(req.query.foo);
             sendSuccess( res, req.params );
         }
         
