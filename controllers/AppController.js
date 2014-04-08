@@ -1,6 +1,7 @@
 
 module.exports = function() {
     
+    
     /**
      * Generic base method to send data back to the client
      *
@@ -18,6 +19,14 @@ module.exports = function() {
         });
     };
     
+    
+    /**
+     * Wrapper for send() success messages
+     *
+     * @param {Object} res
+     * @param {Object} data     Payload to send, if any
+     * @param {Number} code     Internal code (optional)
+     */
     var sendSuccess = function( res, data, code ) {
         send( null, res, code, 200, data );
     };
@@ -25,10 +34,17 @@ module.exports = function() {
     
     return {
         
+        
         index: function( req, res, next ) {
             sendSuccess( res, {
                 foo: 'bar'
             });
+        },
+        
+        
+        search: function( req, res, next ) {
+            log.debug(req.params);
+            sendSuccess( res, req.params );
         }
         
     };
