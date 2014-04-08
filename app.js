@@ -35,10 +35,10 @@ colors.setTheme({
 });
 
 var log = function() {}; // Yes, this will destroy the global namespace.
-log.info  = function(m) { console.log('INFO'.info + '\t' + m); };
-log.debug = function(m) { console.log('DEBUG'.debug + '\t' + m); };
-log.warn  = function(m) { console.log('WARN'.warn + '\t' + m); };
-log.error = function(m) { console.log('ERROR'.error + '\t' + m); };
+log.info  = function(m) { console.log('INFO'.info, '\t', m); };
+log.debug = function(m) { console.log('DEBUG'.debug, '\t', m); };
+log.warn  = function(m) { console.log('WARN'.warn, '\t', m); };
+log.error = function(m) { console.log('ERROR'.error, '\t', m); };
 
 
 // Parse initialization arguments
@@ -52,7 +52,7 @@ var app = restify.createServer({
     name: 'TubeJockey'
 });
 
-log.info( app.name.toUpperCase() + ' LOADING' );
+log.info( '\n' + (app.name.toUpperCase() + ' LOADING').bold.gay );
 
 
 /**
@@ -82,7 +82,26 @@ log.info( app.name.toUpperCase() + ' LOADING' );
 
 
 // Setup routes
+var routes = require('./routes');
 
+for ( var i in routes ) {
+    
+    // Default to GET if route has no verb
+    routes[i].method = routes[i].method || 'get';
+    
+    log.debug(
+        'Initializing route ' + routes[i].method.toUpperCase().magenta + ' ' +
+        (routes[i].controller + '/' + routes[i].action).grey
+    );
+    
+    var controller = new (require('./controllers/' + routes[i].controller))();
+    
+    app[routes[i].method](
+        routes[i].path,
+        controller[routes[i].action]
+    );
+    
+}
 
 app.use( restify.bodyParser() );
 app.use( restify.authorizationParser() );
