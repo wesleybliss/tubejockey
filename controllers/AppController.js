@@ -43,10 +43,13 @@ module.exports = function() {
         
         
         search: function( req, res, next ) {
-            log.debug(req.params);
-            log.debug(req.body);
-            log.debug(req.query.foo);
-            sendSuccess( res, req.params );
+            
+            var youtube = require('youtube-feeds');
+            
+            youtube.feeds.videos({ q: req.params.query }, function( err, videos ) {
+                sendSuccess( res, videos );
+            });
+            
         }
         
     };
