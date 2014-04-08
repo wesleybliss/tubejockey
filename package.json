@@ -1,0 +1,22 @@
+{
+    "name": "TubeJockey",
+    "version": "0.0.1",
+    "description": "Collaborative DJing over the web, using YouTube as a backend.",
+    "main": "app.js",
+    "scripts": {
+        "test": "mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "TODO"
+    },
+    "keywords": [
+        "dj",
+        "audio",
+        "music",
+        "youtube",
+        "collaborative"
+    ],
+    "author": "Wesley Bliss <wesley.bliss@gmail.com>",
+    "license": "TODO"
+}
