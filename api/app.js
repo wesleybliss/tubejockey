@@ -59,15 +59,40 @@ log = function() {};
         name: 'TubeJockey'
     });
     
-    log.info( '\n' + (app.name.toUpperCase() + ' LOADING').bold.gay );
+    console.log( '\n' + (app.name.toUpperCase() + ' LOADING').gay.bold + '\n' );
     
     
     // Restify middleware (must come before routing)
+    //app.use( restify.CORS({ origins: ['http://tubejockey.local', 'http://tubejockey.local:8080']}) );
     //app.use( restify.fullResponse() );
     app.use( restify.queryParser() );
     app.use( restify.bodyParser() );
     app.use( restify.authorizationParser() );
     app.use( restify.gzipResponse() );
+    
+    
+    /**
+     * Middleware for CORS
+     */
+    //app.use( function( req, res, next ){
+    //    res.header( 'Access-Control-Allow-Origin', '*' );
+    //    res.header( 'Access-Control-Allow-Headers', 'X-Requested-With' );
+    //    return next();
+    //});
+    
+    /**
+     * @debug @todo None of that CORS shit is working in Restify,
+     *      so this is hack hack for now
+     */
+    app.pre(function( req, res, next ) {
+        res.header( 'Access-Control-Allow-Origin', '*' );
+        res.header( 'Access-Control-Allow-Method', 'POST, GET, PUT, DELETE, OPTIONS' );
+        res.header( 'Access-Control-Allow-Headers', 'Origin, X-Requested-With, X-File-Name, Content-Type, Cache-Control' );
+        if ( 'OPTIONS' == req.method ) {
+            res.send( 203, 'OK' );
+        }
+        next();
+    });
     
     
     /**

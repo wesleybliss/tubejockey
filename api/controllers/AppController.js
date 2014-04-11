@@ -32,6 +32,27 @@ module.exports = function() {
     };
     
     
+    /**
+     * Cleans a YouTube URL, removing any unnecessary params from the querystring
+     *
+     * @param {String} url  E.g. "http://youtube.com/watch?v=XXX&junk=1&junk=2"
+     * @returns {String}    E.g. "http://youtube.com/watch?v=XXX"
+     */
+    var cleanYouTubeURL = function( url ) {
+        
+        var site = url.substring( url.indexOf('/watch') + '/watch'.length ),
+            params = url.substring( 0, site.length ).split( '&' );
+        
+        for ( var i in params ) {
+            //if ( params[i].substring(0, 'v')) {
+            //    //code
+            //}
+            console.log( params );
+        }
+        
+    };
+    
+    
     return {
         
         
@@ -46,7 +67,25 @@ module.exports = function() {
             
             var youtube = require('youtube-feeds');
             
-            youtube.feeds.videos({ q: req.params.query }, function( err, videos ) {
+            var params = {
+                q: req.params.query,
+                'max-results':  10,
+                /*orderby:        'published'*/
+            };
+            
+            youtube.feeds.videos( params, function( err, data ) {
+                cleanYouTubeURL( data.items[0].player.default + '&lalala=fooo' );
+                var videos = [];
+                
+                for ( var i in data.items ) {
+                    videos.push({
+                        id: data.items[i].id,
+                        title: data.items[i].title,
+                        description: data.items[i].description,
+                        
+                    })
+                }
+                
                 sendSuccess( res, videos );
             });
             
