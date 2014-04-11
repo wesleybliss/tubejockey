@@ -10,8 +10,7 @@ var TJ = function() {
     }
     
     this.HOST = 'http://tubejockey.local:8080';
-    this.API = {
-        BASE: 'app',
+    this.ROUTES = {
         SEARCH: 'search'
     };
     
@@ -25,7 +24,7 @@ var TJ = function() {
         if ( !arguments || arguments.length < 1 ) {
             throw 'TJ::buildURI Path is required';
         }
-        return this.HOST + '/' + this.API.BASE + '/' +
+        return this.HOST + '/' +
             Array.prototype.slice.call(arguments).join('');
     };
     
@@ -39,7 +38,8 @@ var TJ = function() {
  * @param {Function} done
  */
 TJ.prototype.search = function( query, done ) {
-    $.getJSON( this.buildURI(this.API.SEARCH), {query: query}, done );
+    //$.getJSON( this.buildURI(this.ROUTES.SEARCH), {query: query}, done );
+    
     return this;
 };
 
@@ -51,11 +51,26 @@ $(function() {
     
     var tj = new TJ();
     
-    $query.on( 'keyup', function(key) {
-        console.log( 'searching for ' + $(this).val() );
-        tj.search( $(this).val(), function(data) {
-            console.log( data );
-        });
-    })
+    //$query.on( 'keyup', function(key) {
+    //    console.log( 'searching for ' + $(this).val() );
+    //    tj.search( $(this).val(), function(data) {
+    //        console.log( data );
+    //    });
+    //})
+    
+    
+    $query.tokenInput( tj.buildURI(tj.ROUTES.SEARCH), {
+        method: 'GET',
+        crossDomain: false,
+        queryParam: 'query',
+        jsonContainer: 'data',
+        propertyToSearch: 'name',
+        hintText: 'Search for music...',
+        resultsLimit: 10,
+        onReady: function() {},
+        onResult: function( matches ) {},
+        onAdd: function( item ) {},
+        onDelete: function( item ) {}
+    });
     
 });

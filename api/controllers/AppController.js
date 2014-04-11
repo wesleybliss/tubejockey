@@ -74,13 +74,13 @@ module.exports = function() {
             };
             
             youtube.feeds.videos( params, function( err, data ) {
-                cleanYouTubeURL( data.items[0].player.default + '&lalala=fooo' );
+                //cleanYouTubeURL( data.items[0].player.default + '&lalala=fooo' );
                 var videos = [];
                 
                 for ( var i in data.items ) {
                     videos.push({
                         id: data.items[i].id,
-                        title: data.items[i].title,
+                        name: data.items[i].title,
                         description: data.items[i].description,
                         
                     })
