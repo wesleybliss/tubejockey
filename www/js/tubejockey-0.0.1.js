@@ -34,11 +34,24 @@ var TJ = tj = {
 // DOM elements
 TJ.$query = null;
 TJ.$matches = null;
+TJ.KEYCODES = [ 8, 9, 13, 16, 17, 18, 19, 27, 35, 36, 45, 46 ];
 TJ.KEYS = {
     LEFT: 37,
     RIGHT: 39,
     UP: 38,
-    DOWN: 40
+    DOWN: 40,
+    BACKSPACE: 8,
+    TAB: 9,
+    ENTER: 13,
+    SHIFT: 16,
+    CONTROL: 17,
+    ALT: 18,
+    PAUSE_BREAK: 19,
+    ESCAPE: 27,
+    END: 35,
+    HOME: 36,
+    INSERT: 45,
+    DELETE: 46
 };
 
 // Search timeout
@@ -104,13 +117,11 @@ TJ.init = function( querySelector, matchesSelector ) {
 
     tj.$query.on( 'keyup', function(e) {
 
-        if ( [tj.KEYS.UP, tj.KEYS.DOWN].indexOf(e.keyCode) > -1 ) {
+        if ( [tj.KEYS.UP, tj.KEYS.DOWN, tj.KEYS.ENTER].indexOf(e.keyCode) > -1 ) {
             e.preventDefault();
-            console.log( 'key is up/down' );
             tj.navigateMatches( e.keyCode );
         }
         else {
-            console.log( 'key is search' );
             ( $(this).val( ) != $(this).data('last-value') ) &&
                 $(this).data( 'last-value', $(this).val() ) &&
                 tj.handleSearch();
@@ -135,6 +146,10 @@ TJ.navigateMatches = function( direction ) {
         
         case tj.KEYS.DOWN:
             tj.navigateDown();
+            break;
+        
+        case tj.KEYS.ENTER:
+            tj.debugPlayVideo();
             break;
         
     }
@@ -189,6 +204,10 @@ TJ.navigateDown = function() {
     $active.addClass('selected');
     
     return tj;
+    
+};
+
+TJ.debugPlayVideo = function() {
     
 };
 
