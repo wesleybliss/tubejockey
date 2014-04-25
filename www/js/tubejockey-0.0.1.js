@@ -33,6 +33,7 @@ var TJ = tj = {
 
 // DOM elements
 TJ.$query = null;
+TJ.matches = [],
 TJ.$matches = null;
 TJ.KEYCODES = [ 8, 9, 13, 16, 17, 18, 19, 27, 35, 36, 45, 46 ];
 TJ.KEYS = {
@@ -73,7 +74,8 @@ TJ.search = function( query, done ) {
 };
 
 TJ.handleSearch = function() {
-
+    
+    tj.matches = [];
     tj.$matches.empty();
     window.clearTimeout( tj.searchTimer );
 
@@ -89,8 +91,8 @@ TJ.handleSearch = function() {
             }
             
             $.each( data, function( index, item ) {
-                console.log( index + ': ' + item );
-                tj.$matches.append( '<li>' + item.name + '</li>' );
+                tj.matches.push( item );
+                tj.$matches.append( '<li>' + item.title + '</li>' );
                 
             });
             
@@ -208,7 +210,16 @@ TJ.navigateDown = function() {
 };
 
 TJ.debugPlayVideo = function() {
-    
+    //console.log(
+    //    tj.$matches.find('li.selected').index(),
+    //    tj.matches,
+    //    tj.matches[tj.$matches.find('li.selected').index()]
+    //);
+    var temp = tj.matches[tj.$matches.find('li.selected').index()];
+    console.log(temp);
+    $('p#debug-result-url').html(
+        temp.title + '<br />' + temp.player.default
+    );
 };
 
 
